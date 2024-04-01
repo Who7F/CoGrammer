@@ -1,19 +1,21 @@
 def main():
-    #Input file 
+    # Input file 
     INPUT_FILE = "DOB.txt"
 
-    #I just think it looks cleaner with a with and no close
+    # Open the input file and read its contents
     with open(INPUT_FILE, 'r') as f:
         my_file = f.read()
         
-    #Prints out names
-    print("\nName")
+    # Print out names
+    print("\nName:-")
     for line in list(my_file.splitlines()):
+        # Extract and print the first two elements (first name and last name)
         print(' '.join(list(line.split())[:2]))
         
-    #Prints out birthdays
-    print("\nBirthday")
+    # Print out birthdays
+    print("\nBirthday:-")
     for line in list(my_file.splitlines()):
+        # Extract and print the last three elements (day, month, and year)
         print(' '.join(list(line.split())[-3:]))
 
 

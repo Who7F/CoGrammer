@@ -15,20 +15,22 @@ def main():
     # Display the string in sticky caps, upper case, and lower case        
     print(f"String in sticky caps: {some_string}")
     print(f"String in  upper case: {some_string.upper()}")
-    print(f"string in  lower case: {some_string.lower()}")
-
+    print(f"String in  lower case: {some_string.lower()}")
+    
     #Converts string to a list
     some_string: list = some_string.split()
+
     
     # Convert the list elements to alternative title case
     for i in range(len(some_string)):
         if i%2 == 0:
-            some_string[i] = some_string[i].title()
+            some_string[i] = some_string[i].upper()
         else:
             some_string[i] = some_string[i].lower()
 
     # Join the list elements back into a string and print        
-    print(' '.join(some_string))
+    print(f"String in alternative: {' '.join(some_string)}")
+    # You're quite right. It said alternative words
     
 if __name__=='__main__':
     main()
