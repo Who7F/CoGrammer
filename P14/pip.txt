@@ -1,0 +1,5 @@
+mlxtend
+
+scaled_data = minmax_scaling(countries['IT.CEL.SETS.P2'], columns = [0])
+
+scaled_data = minmax_scaling(np.array(countries['IT.CEL.SETS.P2']), columns = [0])

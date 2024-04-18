@@ -36,6 +36,8 @@ def calumnDaysAgo(data):
 
 
 def main():
+    url = 'https://raw.githubusercontent,com/mwasjom/deaborn-data/master.iris'
+    print(url)
     df = pd.read_csv('store_income_data_task.csv', skipinitialspace = True)
     ColumnsName(df)
     uniqueCountry(df)
