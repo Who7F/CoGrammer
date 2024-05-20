@@ -3,14 +3,21 @@ import pandas as pd
 import spacy
 from textblob import TextBlob
 
+'''
+Class: PascalCase
+Funtion: camelCase
+Varbles: snake_case
+Static Varbles: UPPER_SNAKE_CASE
+PEP 8: can go forth and multiply with itself
+'''
+
 # Gets polarity and subjectivity and adds them do the datafraim
-def review_clean(df, COLUMN_RVW: str, COLUMN_POL: str, COLUMN_SUB: str, x: int)-> None:
+def reviewClean(df, NLP, COLUMN_RVW: str, COLUMN_POL: str, COLUMN_SUB: str, x: int)-> None:
     if pd.isna(df.at[x, COLUMN_POL]):
-        nlp = spacy.load('en_core_web_md')
         reviews_data = df[COLUMN_RVW][x].lower().strip()
-        clean_test = cleanText(reviews_data, nlp=nlp)
-        df.at[x, COLUMN_POL] = sentiment_polarity(clean_test)
-        df.at[x, COLUMN_SUB] = sentiment_subjectivity(clean_test)
+        clean_test = cleanText(reviews_data, nlp=NLP)
+        df.at[x, COLUMN_POL] = sentimentPlarity(clean_test)
+        df.at[x, COLUMN_SUB] = sentimentSubjectivity(clean_test)
     
 # removes all unwanted data
 def cleanText(text: str, nlp)-> str:
@@ -23,20 +30,21 @@ def cleanText(text: str, nlp)-> str:
 # https://textblob.readthedocs.io/en/dev/quickstart.html
 # Sentiment(polarity=0.39166666666666666, subjectivity=0.4357142857142857)
 # return subjectivity
-def sentiment_subjectivity(review: str)-> float:
+def sentimentSubjectivity(review: str)-> float:
     analysis = TextBlob(review)
     return analysis.sentiment.subjectivity
 
 # return polarity
-def sentiment_polarity(review: str)-> float:
+def sentimentPlarity(review: str)-> float:
     analysis = TextBlob(review)
     return analysis.sentiment.polarity
 
 # I dont know why this isn't working
 def dfReady(df, COLUMN_RVW: str, COLUMN_POL: str, COLUMN_SUB: str):
-    df = df.dropna(subset=[COLUMN_RVW])
-    df[COLUMN_POL] = pd.Series(dtype='int')
-    df[COLUMN_SUB] = pd.Series(dtype='int')
+    df = df.dropna(subset=[COLUMN_RVW]).copy()
+    df[COLUMN_POL] = pd.Series(dtype='float')
+    df[COLUMN_SUB] = pd.Series(dtype='float')
+    return df
 
 
 def main():
@@ -45,17 +53,16 @@ def main():
     COLUMN_RVW: str = "reviews.text"
     COLUMN_POL: str = "polarity"
     COLUMN_SUB: str = "subjectivity"
+    NLP = spacy.load('en_core_web_md')
     x: int = 2250
 
     
     df = pd.read_csv(DATA_FILE, dtype=str)
     # Claen subset
-    # dfReady(df, COLUMN_RVW, COLUMN_POL, COLUMN_SUB)
-    df = df.dropna(subset=[COLUMN_RVW])
-    df[COLUMN_POL] = pd.Series(dtype='int')
-    df[COLUMN_SUB] = pd.Series(dtype='int')
+    df = dfReady(df, COLUMN_RVW, COLUMN_POL, COLUMN_SUB)
 
-    review_clean(df, COLUMN_RVW, COLUMN_POL, COLUMN_SUB, x)
+    
+    reviewClean(df, NLP, COLUMN_RVW, COLUMN_POL, COLUMN_SUB, x)
 
     print(f"\nReviews:\n{df[COLUMN_RVW][x]}\n\nPolarity Score:\n{df[COLUMN_POL][x]}\n\nSubjectivity Score:\n{df[COLUMN_SUB][x]}")
 
